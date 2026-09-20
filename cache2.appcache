@@ -15,6 +15,4 @@ src/workers.js #199ae642c1c0bdd4e42ebe694ced604f195fc1738eb16c087f33aab03a4cae30
 src/ps4/constants.js #c832a6f7ba08b729a291a5807caf5f2caffac52823e32ca8bca6dbba3252e329
 src/ps4/userland.js #dc1ae1fd99829511818dd0ecde813e75287f804b4543af4186d09ab875d5c2a4
 src/ps4/kernel.js #bb184cf282dcb9c94aec0a39306e93923ece1b549f847010fc8eb1fe0468ff33
-
-NETWORK:
-*
+payload.bin #c6329401d1810e16c84e6474ac30977dbdc951987c10cdb559370de7d59db0b0
