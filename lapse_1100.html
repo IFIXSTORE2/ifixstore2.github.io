@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache2.manifest">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ps4 jailbreak - IFIXSTORE (11.00)</title>
+  <style>
+    html, body {
+        background-color: #0b0d10;
+        background-image: radial-gradient(circle at center, #151a21 0%, #0b0d10 100%);
+        color: #c8ced8;
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px;
+    }
+
+
+
+    
+   
+ #header {
+      text-align: center;
+      margin-bottom: 20px;
+  }
+
+   .brand-logo-img {
+    max-width: 455px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+    /* إزالة الخلفية البيضاء وتأثير الإضاءة */
+    mix-blend-mode: screen; 
+    filter: drop-shadow(0px 0px 15px #ffffff) drop-shadow(0px 0px 25px #00d2ff);
+    transition: transform 0.3s ease;
+}
+
+.brand-logo-img:hover {
+    transform: scale(1.05);
+}
+
+    .btn-container {
+        width: 600px;
+        background: rgb(36 72 125 / 90%);
+        border: 1px solid rgba(88, 116, 163, 0.2);
+        border-radius: 12px;
+        padding: 7px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    .autoJb {
+        font-size: 14px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .main-layout {
+        width: 600px;
+        background: rgb(22 32 48 / 90%);
+        border: 1px solid rgba(88, 116, 163, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #console {
+        white-space: pre-wrap;
+        font: 11px/1.45 Consolas, monospace;
+        background: #080a0d;
+        border: 1px solid #1e2732;
+        border-radius: 6px;
+        padding: 10px;
+        height: 160px;
+        overflow-y: auto;
+        color: #c8ced8;
+        margin: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="header">
+   <img src="logo.png" alt="IFIXSTORE Logo" class="brand-logo-img">
+    
+</div>
+  <div class="btn-container">
+       
+   
+    
+    <!-- خيار مخفي لتثبيت القيمة برمجياً حتى لا يتأثر سكربت التشغيل الأساسي -->
+    <div style="display:none;">
+      <form id="kernel-options">
+        <input type="radio" name="kernel" id="netctrl-exploit" value="netctrl">
+        <input type="radio" name="kernel" id="lapse-exploit" value="lapse" checked>
+ <h3 id="UA">Running on:</h3>
+      </form>
+      <button id="jeilbrek"></button>
+    </div>
+
+    <div class="autoJb">
+      <input class="mt-2" id="autoJbInput" type="checkbox" checked>
+      <label for="autoJbInput" id="autoJbLabel">Auto Jailbreak</label>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <pre id="console">Ready. Awaiting execution...</pre>
+  </div>
+
+  <script src="src/main.js"></script>
+  <script src="includes/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps4 jailbreak - IFIXSTORE</title>
+<style>
+  html, body {
+        background-color: #0b0d10;
+        background-image: radial-gradient(circle at center, #151a21 0%, #0b0d10 100%);
+        color: #c8ced8;
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px;
+    }
+
+  .brand-logo-img {
+    max-width: 455px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+    /* إزالة الخلفية البيضاء وتأثير الإضاءة */
+    mix-blend-mode: screen; 
+    filter: drop-shadow(0px 0px 15px #ffffff) drop-shadow(0px 0px 25px #00d2ff);
+    transition: transform 0.3s ease;
+}
+
+.brand-logo-img:hover {
+    transform: scale(1.05);
+}
+
+
+
+  #wrap { 
+      width: 600px; 
+      background: rgb(36 72 125 / 90%);
+      border: 1px solid rgba(88, 116, 163, 0.2);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      margin-top: 50px;
+  }
+  
+  #progress-container {
+      width: 100%;
+      background-color: rgba(30, 39, 50, 0.8);
+      border-radius: 6px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(88, 116, 163, 0.4);
+  }
+  #progress-bar {
+      width: 0%;
+      height: 24px;
+      background: linear-gradient(90deg, #1e5799, #2989d8, #207cca);
+      text-align: center;
+      color: white;
+      line-height: 24px;
+      font-weight: bold;
+      font-size: 13px;
+      transition: width 0.3s ease;
+  }
+
+  #state { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #46b176; }
+  #det { font-size: 13px; color: #c8ced8; margin-bottom: 5px; }
+  #cache { font-size: 12px; color: #8b95a3; }
+  .bad { color: #c12c15; } 
+  .warn { color: #d8c07f; }
+</style>
+</head>
+<body>
+<img src="logo.png" alt="IFIXSTORE Logo" class="brand-logo-img">
+
+<div id="wrap">
+  <div id="progress-container">
+    <div id="progress-bar">0%</div>
+  </div>
+
+  <div id="state">detecting firmware...</div>
+  <div id="det"></div>
+  <div id="cache"></div>
+</div>
+
+<script>
+(function () {
+    var stateEl = document.getElementById("state");
+    var detEl = document.getElementById("det");
+    var cacheEl = document.getElementById("cache");
+    var progressBar = document.getElementById("progress-bar");
+
+    function updateProgress(percent, text) {
+        if (progressBar) {
+            var p = Math.min(Math.max(percent, 0), 100);
+            progressBar.style.width = p + "%";
+            progressBar.textContent = p + "%" + (text ? " - " + text : "");
+        }
+    }
+
+    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
+    function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
+    
+    var params = new URLSearchParams(location.search);
+    updateProgress(10, "Checking firmware");
+
+    var key = null, fwnum = null;
+    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+    if (m) {
+        var minor = parseInt(m[2], 16);
+        var ms = minor.toString(16);
+        if (ms.length < 2) ms = "0" + ms;
+        key = m[1] + "." + ms;
+        fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
+    }
+    
+    updateProgress(25, "Analyzing system");
+
+    var targetPage = null, why = "";
+    var forced = params.get("bug");
+
+    if (forced === "lapse" || forced === "poops") {
+        why = "forced via ?bug=" + forced;
+        targetPage = (forced === "lapse" ? "run_lapse.html" : "run_poops.html") + location.search;
+    } else if (!key) {
+        why = "user-agent is not a PlayStation 4";
+    } else if (fwnum === 1300 || fwnum === 1350 || fwnum === 1352) {
+        // توجيه إصدارات 13.00 و 13.50 و 13.52 إلى المسار المحدد
+        targetPage = "13/index.html" + location.search;
+        why = key + " -> FW 13.xx Exploit";
+    } else if (fwnum >= 1100 && fwnum <= 1102) {
+        // توجيه أجهزة 11.00 - 11.02 إلى ملف الهوست الخاص بهم داخل مجلد 1100
+        targetPage = "lapse_1100.html";
+        why = key + " -> CSSFontFace Exploit (11.00)";
+    } else if (fwnum >= 1150 && fwnum <= 1202) {
+        // توجيه إصدارات 11.50 حتى 12.02 إلى ثغرة lapse
+        targetPage = "run_lapse.html" + location.search;
+        why = key + " -> Lapse Exploit";
+    } else if (fwnum >= 1250 && fwnum < 1300) {
+        // توجيه الإصدارات من 12.50 حتى ما قبل 13.00 إلى ثغرة poops
+        targetPage = "run_poops.html" + location.search;
+        why = key + " -> Poops Exploit";
+    } else {
+        why = key + " -- no working bug for this firmware";
+    }
+    
+    detEl.innerHTML = "firmware <b>" + (key || "unknown") + "</b> &middot; " + why;
+
+    if (!targetPage) { 
+        updateProgress(100, "Unsupported");
+        setState("UNSUPPORTED FIRMWARE", "bad"); 
+        return; 
+    }
+
+    function go() { 
+        updateProgress(100, "Ready");
+        setState("Redirecting...", "warn");
+        setTimeout(function() {
+            location.replace(targetPage);
+        }, 300);
+    }
+
+    function waitForTap(msg, action) {
+        setState(msg, "warn");
+        function fire() {
+            window.removeEventListener("click", fire);
+            window.removeEventListener("keydown", fire);
+            action();
+        }
+        window.addEventListener("click", fire);
+        window.addEventListener("keydown", fire);
+    }
+
+    var ac = window.applicationCache;
+    if (!ac || !document.documentElement.hasAttribute("manifest")) {
+        updateProgress(60, "Loading payload");
+        go();
+    } else if (!navigator.onLine) {
+        setCache("offline -- from cache", true);
+        updateProgress(100, "Loaded offline");
+        go();
+    } else if (ac.status === ac.IDLE) {
+        setCache("cached", true);
+        updateProgress(100, "Cached ready");
+        go();
+    } else {
+        setCache("checking cache...");
+        updateProgress(40, "Checking cache");
+    }
+
+    if (ac) {
+        ac.addEventListener("cached", function () {
+            setCache("cached for offline use", true);
+            updateProgress(100, "Caching complete");
+            waitForTap("CACHED -- press X or tap to run", go);
+        }, false);
+        
+        ac.addEventListener("updateready", function () {
+            try { ac.swapCache(); } catch (e) {}
+            setCache("update downloaded", true);
+            updateProgress(100, "Update ready");
+            waitForTap("UPDATE READY -- press X or tap to reload", function () { location.reload(); });
+        }, false);
+
+        ac.addEventListener("noupdate", function () {
+            setCache("cached -- offline ready", true);
+            updateProgress(100, "Offline ready");
+            go();
+        }, false);
+        
+        ac.addEventListener("error", function () {
+            setCache("cache unavailable");
+            updateProgress(100, "Cache error");
+            go();
+        }, false);
+    }
+})();
+</script>
+</body>
+</html>
