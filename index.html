@@ -139,7 +139,7 @@
         // توجيه إصدارات 11.50 حتى 12.02 إلى ثغرة lapse
         targetPage = "run_lapse.html" + location.search;
         why = key + " -> Lapse Exploit";
-    } else if (fwnum >= 1250 && fwnum < 1300) {
+    } else if (fwnum >= 1250 && fwnum <= 1300) {
         // توجيه الإصدارات من 12.50 حتى ما قبل 13.00 إلى ثغرة poops
         targetPage = "run_poops.html" + location.search;
         why = key + " -> Poops Exploit";
