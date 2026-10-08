@@ -137,11 +137,11 @@
         why = key + " -> CSSFontFace Exploit (11.00)";
     } else if (fwnum >= 1150 && fwnum <= 1202) {
         // توجيه إصدارات 11.50 حتى 12.02 إلى ثغرة lapse
-        targetPage = "12/run_lapse.html" + location.search;
+        targetPage = "12/index.html" + location.search;
         why = key + " -> Lapse Exploit";
     } else if (fwnum >= 1250) {
         // توجيه الإصدارات من 12.50 حتى ما قبل 13.00 إلى ثغرة poops
-        targetPage = "12/run_poops.html" + location.search;
+        targetPage = "12/index.html" + location.search;
         why = key + " -> Poops Exploit";
     } else {
         why = key + " -- no working bug for this firmware";
