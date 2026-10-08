@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps4 jailbreak - IFIXSTORE</title>
+<style>
+  html, body {
+        background-color: #0b0d10;
+        background-image: radial-gradient(circle at center, #151a21 0%, #0b0d10 100%);
+        color: #c8ced8;
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px;
+    }
+
+  /* الهيدر واللوجو المصغر الأنيق */
+  #header {
+      text-align: center;
+      margin-bottom: 20px;
+  }
+   .brand-logo-img {
+    max-width: 455px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+    /* إزالة الخلفية البيضاء وتأثير الإضاءة */
+    mix-blend-mode: screen; 
+    filter: drop-shadow(0px 0px 15px #ffffff) drop-shadow(0px 0px 25px #00d2ff);
+    transition: transform 0.3s ease;
+}
+
+.brand-logo-img:hover {
+    transform: scale(1.05);
+}
+
+
+  #wrap { 
+      width: 600px; 
+      background: rgb(36 72 125 / 90%);
+      border: 1px solid rgba(88, 116, 163, 0.2);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
+  
+  /* تصميم شريط التقدم */
+  #progress-container {
+      width: 100%;
+      background-color: rgba(30, 39, 50, 0.8);
+      border-radius: 6px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(88, 116, 163, 0.4);
+  }
+  #progress-bar {
+      width: 0%;
+      height: 24px;
+      background: linear-gradient(90deg, #1e5799, #2989d8, #207cca);
+      text-align: center;
+      color: white;
+      line-height: 24px;
+      font-weight: bold;
+      font-size: 13px;
+      transition: width 0.3s ease;
+  }
+
+  #state { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #46b176; }
+  
+  #out { 
+      white-space: pre-wrap; 
+      font: 11px/1.45 Consolas, monospace;
+      background: #080a0d; 
+      border: 1px solid #1e2732; 
+      border-radius: 6px;
+      padding: 10px; 
+      height: 160px; 
+      overflow-y: auto; 
+      color: #c8ced8;
+  }
+
+  .ok { color:#7fd0a0; } 
+  .bad { color:#c12c15; } 
+  .warn { color:#d8c07f; }
+</style>
+</head>
+<body>
+
+<!-- شعار المحل بحجم أنيق في الأعلى -->
+<div id="header">
+  <img src="logo.png" alt="IFIXSTORE Logo" class="brand-logo-img">
+
+</div>
+
+<div id="wrap">
+  <!-- شريط التقدم -->
+  <div id="progress-container">
+    <div id="progress-bar">0%</div>
+  </div>
+
+  <div id="state">loading lapse chain...</div>
+  <div id="out"></div>
+</div>
+
+<script>
+    function setProgress(percent, text) {
+        var bar = document.getElementById("progress-bar");
+        if (bar) {
+            bar.style.width = percent + "%";
+            bar.textContent = percent + "%" + (text ? " - " + text : "");
+        }
+    }
+
+    const observer = new MutationObserver(function(mutations) {
+        var stateText = document.getElementById("state").textContent.toLowerCase();
+        var outText = document.getElementById("out").innerText.toLowerCase();
+
+        if (outText.includes("all done") || outText.includes("chain=complete") || stateText.includes("done") || stateText.includes("success")) {
+            setProgress(100, "Completed successfully!");
+        } else if (stateText.includes("exploit") || stateText.includes("trigger") || outText.includes("kernel")) {
+            setProgress(75, "Triggering Exploit...");
+        } else if (stateText.includes("spray") || outText.includes("spray") || outText.includes("socket")) {
+            setProgress(40, "Memory Spraying...");
+        } else if (stateText.includes("initializing") || stateText.includes("loading")) {
+            setProgress(20, "Initializing...");
+        }
+    });
+
+    window.addEventListener("DOMContentLoaded", function() {
+        var targetNode = document.getElementById("state");
+        if (targetNode) {
+            observer.observe(targetNode, { childList: true, characterData: true, subtree: true });
+        }
+        var outNode = document.getElementById("out");
+        if (outNode) {
+            observer.observe(outNode, { childList: true, characterData: true, subtree: true });
+        }
+        setProgress(10, "Starting...");
+    });
+</script>
+
+<script type="module">import "./chain_poops.js";</script>
+</body>
+</html>
